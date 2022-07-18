@@ -1,0 +1,5 @@
+**/*.egg-info
+.eggs
+.hypothesis
+dist
+**/__pycache__
