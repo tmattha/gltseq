@@ -19,7 +19,7 @@ def fourier_coeff(f: t.Callable[[float], complex]) -> t.Callable[[int], complex]
         # The subdivision limit must be extended for larger k, because
         # trigonometric manipulation forces the rate of change to
         # go up.
-        max_subdivisions = min((k + 1) * 50, 10000)
+        max_subdivisions = min((abs(k) + 1) * 50, 10000)
         integrand = lambda phi: f(phi) * cm.exp(-1j * k * phi)
         integrand_real = lambda phi: integrand(phi).real
         integrand_imag = lambda phi: integrand(phi).imag
@@ -35,7 +35,9 @@ def fourier_coeff(f: t.Callable[[float], complex]) -> t.Callable[[int], complex]
 
 def toeplitz(f, n) -> npt.NDArray:
     fk_inst = fourier_coeff(f)
-    return scipy.linalg.toeplitz([fk_inst(i) for i in range(n)])
+    return scipy.linalg.toeplitz(
+        [fk_inst(i) for i in range(n)],
+        [fk_inst(-i) for i in range(n)])
 
 
 def eigsum_from_symbol(f: t.Callable[[float], complex], n: int) -> float:
