@@ -7,8 +7,8 @@ import typing as t
 
 
 def symbol_avg(f: t.Callable[[float], complex]) -> float:
-    f_real = lambda phi: f(phi).real
-    f_imag = lambda phi: f(phi).imag
+    f_real = lambda theta: f(theta).real
+    f_imag = lambda theta: f(theta).imag
     rhs_real = scipy.integrate.quad(f_real, -cm.pi, cm.pi)[0]
     rhs_imag = scipy.integrate.quad(f_imag, -cm.pi, cm.pi)[0]
     return 1 / (2 * cm.pi) * (rhs_real + 1j * rhs_imag)
@@ -20,9 +20,9 @@ def fourier_coeff(f: t.Callable[[float], complex]) -> t.Callable[[int], complex]
         # trigonometric manipulation forces the rate of change to
         # go up.
         max_subdivisions = min((abs(k) + 1) * 50, 10000)
-        integrand = lambda phi: f(phi) * cm.exp(-1j * k * phi)
-        integrand_real = lambda phi: integrand(phi).real
-        integrand_imag = lambda phi: integrand(phi).imag
+        integrand = lambda theta: f(theta) * cm.exp(-1j * k * theta)
+        integrand_real = lambda theta: integrand(theta).real
+        integrand_imag = lambda theta: integrand(theta).imag
         fk_real = scipy.integrate.quad(
             integrand_real, -cm.pi, cm.pi,
             limit=max_subdivisions)[0]
