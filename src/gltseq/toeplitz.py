@@ -48,3 +48,8 @@ def eigsum_from_symbol(f: t.Callable[[float], complex], n: int) -> float:
 def eigsum_from_matrix(matrix: npt.NDArray) -> float:
     w, _ = np.linalg.eig(matrix)
     return 1/matrix.shape[0] * np.sum(w)
+
+
+def singsum_from_matrix(matrix: npt.NDArray) -> float:
+    _, s, _ = np.linalg.svd(matrix)
+    return 1/matrix.shape[0] * np.sum(s)

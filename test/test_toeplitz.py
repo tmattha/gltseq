@@ -12,6 +12,11 @@ def test_fd_diffusion_lhs_rhs(n):
     rhs = toeplitz.symbol_avg(specsym.fd_diffusion)
     assert abs(lhs - rhs ) < 1e-10
 
+@hypothesis.given(hs.integers(min_value=1, max_value=50))
+def test_fd_diffusion_lhs_rhs_singular(n):
+    lhs = toeplitz.singsum_from_matrix(toeplitz.toeplitz(specsym.fd_diffusion, n))
+    rhs = toeplitz.symbol_avg(specsym.fd_diffusion)
+    assert abs(lhs - rhs ) < 1e-10
 
 @hypothesis.given(
     hs.floats(
