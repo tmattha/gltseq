@@ -18,25 +18,23 @@ xs = np.linspace(-pi, pi, _SYMBOL_RES)
 xs_symbol = [f(x) for x in xs]
 
 fig, axs = plt.subplots(2)
-fig.set_figwidth(4)
-fig.set_figheight(8)
+fig.set_figwidth(10)
+fig.set_figheight(10)
 axs[0].hist(np.abs(xs_symbol), _BINS)
 axs[0].set_title('Symbol (absolute sample)')
 axs[0].set_xlabel('$s_i$')
 axs[0].set_ylabel('count')
+
+T = np.zeros((N, N))
+for i, c in enumerate(coeffs):
+    diag_i = i - len(coeffs) // 2
+    T += np.diag(np.repeat(c, N - abs(diag_i)), diag_i)
+_, xs_sings, _= np.linalg.svd(T)
+axs[1].hist(xs_sings, _BINS, color='forestgreen')
 axs[1].set_title('Singular Values')
 axs[1].set_xlabel('$\sigma_i$')
 axs[1].set_ylabel('count')
 
-def update(frame):
-    T = np.zeros((frame, frame))
-    for i, c in enumerate(coeffs):
-        diag_i = i - len(coeffs) // 2
-        T += np.diag(np.repeat(c, frame - abs(diag_i)), diag_i)
-    _, xs_sings, _= np.linalg.svd(T)
-
-    return axs[1].hist(xs_sings, _BINS, color='forestgreen')[2].patches
-
-ani = anim.FuncAnimation(fig, update, frames=range(5, N, _STEPSIZE), blit=True)
-ani.save('distribution_converge.mp4', fps=3, dpi=300)
-# plt.show()
+plt.show()
+fig.tight_layout()
+fig.savefig("media/distribution.png", dpi=600)
