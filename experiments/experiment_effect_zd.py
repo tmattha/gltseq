@@ -35,4 +35,5 @@ ax.legend([r'$A = B+Z$', r'$B = toeplitz(1, 3, 1)$', '$Z = R + N$', 'sv diff of 
 ax.set_xlim(0)
 ax.set_ylim(0)
 plt.show()
+f.tight_layout()
 f.savefig("media/effect_zd.png", dpi=600)
